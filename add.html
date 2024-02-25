@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Page</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="js/studentService.js"></script>
+    <script>
+	var requestData;
+	$(()=>{
+		// function will get executed
+		// on click of submit button
+		$("#submitButton").click(function(ev) {
+			alert("something");
+			let rollNumber=$("#rollNumber").val();
+			let name=$("#name").val();
+			let age=$("#age").val();
+	        
+			var student=new Student(rollNumber,name,age);
+			requestData={
+				param1:student
+			};
+			var prm=new StudentService().addStudent(requestData);
+			prm.then(function(response){
+				alert(response);		
+			},
+			function(response){
+				alert(response);  
+			});
+		});
+	});
+
+    </script>
+</head>
+<body>
+    
+RollNubmer : <input type='text' name='rollNumber' id='rollNumber'></input>
+Name : <input type='text' name='name' id='name'></input>
+Age : <input type='text' name='age' id='age'></input>
+<button id='submitButton'>Submit</button>
+
+<a href='index.html'>Home</a><br>
+
+</body>
+</html>

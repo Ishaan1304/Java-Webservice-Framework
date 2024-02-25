@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="js/studentService.js"></script>
+    <script>
+        function submitForm() {
+            const rollNumber = document.getElementById("rollNumber").value;
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
+
+            const student = new Student(rollNumber, name, age);
+		const requestData = {
+            		param1: student
+            		// Add more parameters as needed
+        	};
+            // Convert the JavaScript object to a JSON string
+            const jsonString = JSON.stringify(requestData);
+	    alert(jsonString);
+            const encodedJsonString = encodeURIComponent(jsonString);
+	    alert(encodedJsonString);
+	    const currentAction = document.forms["studentForm"].action;
+	    const newAction = `${currentAction}?jsonParam=${encodedJsonString}`;
+	    document.forms["studentForm"].action = newAction;
+	    alert(document.forms["studentForm"].action);
+            //document.forms["studentForm"].submit();
+	    window.location.href = newAction;
+        }
+    </script>
+</head>
+<body>
+    <form name="studentForm" action="/TMWebRock/schoolService/sstudentServices/aaddStudent" method="GET">
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" name="rollNumber" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required>
+
+        <!-- Call the JavaScript function on form submission -->
+        <button type="button" onclick="submitForm()">Submit</button>
+    </form>
+</body>
+</html>

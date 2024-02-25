@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get All Page</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="js/studentService.js"></script>
+    <script>
+	var requestData;
+	$(document).ready(()=>{
+		// function will get executed
+		// on click of submit button
+		$("#submitButton").click(function(ev) {
+			alert("something");
+			var prm=new StudentService().getAllStudent();
+			prm.then(function(response){
+				alert(response);
+				var res=JSON.parse(response);
+				console.log(res);
+				displayDataInTable(res.result);
+						
+			},
+			function(response){
+				alert(response);  
+			});
+		});
+	});
+	function displayDataInTable(data) {
+            var table = "<table border='1'><tr><th>Roll Number</th><th>Name</th><th>Age</th></tr>";
+
+            for (var i = 0; i < data.length; i++) {
+                table += "<tr>";
+                table += "<td>" + data[i].rollNumber + "</td>";
+                table += "<td>" + data[i].name + "</td>";
+                table += "<td>" + data[i].age + "</td>";
+                table += "</tr>";
+            }
+
+            table += "</table>";
+
+            // Display the table in a container (replace 'tableContainer' with the ID of the container where you want to display the table)
+            $("#tableContainer").html(table);
+        }
+    </script>
+</head>
+<body>
+    
+
+<div id="container" style='width: 80%; margin: auto; text-align: center;'>
+        <button id='submitButton' style='margin-bottom: 10px;'>Submit</button>
+        <a href='index.html' id='homeLink' style='align-self: flex-end;'>Home</a><br>
+        <div id="tableContainer"></div>
+</div>
+
+
+</body>
+</html>

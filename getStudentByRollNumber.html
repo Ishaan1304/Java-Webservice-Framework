@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Student</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="js/studentService.js"></script>
+    <script>
+        $(document).ready(function () {
+            //const studentService = new StudentService();
+
+            // Event handler for the button click
+            $("#submitBtn").on("click", function () {
+                const rollNumber = $("#rollNumber").val();
+		const requestData = {
+        		param1:rollNumber,
+        		// Add more parameters as needed
+    		};
+		const jsonString = JSON.stringify(requestData);
+		const encodedJsonString = encodeURIComponent(jsonString);
+                // Make an AJAX POST request to the servlet
+                $.ajax({
+                    url: "/TMWebRock/schoolService/sstudentServices/getStudentByRollNumber?jsonParam=" + encodedJsonString, // Adjust based on your servlet mapping
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function (response) {
+                        // Handle the success response
+                        alert("Success");
+                        console.log(response); // Log the response from the server
+                    },
+                    error: function (error) {
+                        // Handle the error
+                        alert("Error");
+                        console.error("Error adding Student:", error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+Get from RollNumber
+    <form>
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" name="rollNumber" required>
+        <button type="button" id="submitBtn">Submit</button>
+    </form>
+</body>
+</html>

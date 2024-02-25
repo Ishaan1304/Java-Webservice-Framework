@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="js/studentService.js"></script>
+    <script>
+        $(document).ready(function () {
+            //const studentService = new StudentService();
+
+            // Event handler for the button click
+            $("#submitBtn").on("click", function () {
+                const rollNumber = $("#rollNumber").val();
+                const name = $("#name").val();
+                const age = $("#age").val();
+
+                const student = new Student(rollNumber, name, age);
+		   const requestData = {
+                   param1: student
+                   // Add more parameters as needed
+                   };
+		const jsonString = JSON.stringify(requestData);
+		const encodedJsonString = encodeURIComponent(jsonString);
+
+        // Convert the JSON data to a query string
+        
+
+        // Make an AJAX GET request to the servlet
+        $.ajax({
+            url: "/TMWebRock/schoolService/sstudentServices/aaddStudent?jsonParam=" + encodedJsonString,
+            type: "GET",
+            contentType: "application/json",
+            success: function (response) {
+                // Handle the success response
+                alert("Success");
+                console.log(response); // Log the response from the server
+            },
+            error: function (error) {
+                // Handle the error
+                alert("Error");
+                console.error("Error adding Student:", error);
+            }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <form>
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" name="rollNumber" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required>
+
+        <button type="button" id="submitBtn">Submit</button>
+    </form>
+</body>
+</html>
