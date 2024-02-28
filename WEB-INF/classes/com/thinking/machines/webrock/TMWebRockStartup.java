@@ -93,7 +93,117 @@ public class TMWebRockStartup extends HttpServlet {
       System.out.println(s.getPriority());
     }
 
+    
+    String strFile = servletConfig.getInitParameter("jsFile");
+    String className=servletConfig.getInitParameter("jsFileClass");
+    String fieldsName=servletConfig.getInitParameter("jsFileClassFields");
+    createJsFile(strFile);
+    generatePOJO(strFile,className,fieldsName);
   } //init function ends
+
+
+    private void generatePOJO(String fileName,String className,String fieldsName)
+    {
+	System.out.println(className);
+	String webAppPath = "C:\\tomcat9\\webapps\\TMWebRock";
+	String fName=webAppPath + "\\WEB-INF\\js\\" + fileName;
+	if(className==null) return;
+	if(fieldsName!=null) 
+	{
+            String[] fields = fieldsName.split(",");
+	    for(String s:fields)
+	    {
+		System.out.println(s);
+	    }            
+	    String generatedCode = generateJavaScriptClass(className, fields);
+	    writeCodeToFile(fName, generatedCode);
+
+        }
+	
+    }
+
+
+
+
+ private static String generateJavaScriptClass(String className, String[] fieldNames) {
+        StringBuilder code = new StringBuilder();
+
+        // Generate class declaration
+        code.append("class ").append(className).append(" {\n");
+
+        // Generate constructor
+        code.append("    constructor(");
+        for (int i = 0; i < fieldNames.length; i++) {
+            code.append(fieldNames[i]);
+            if (i < fieldNames.length - 1) {
+                code.append(", ");
+            }
+        }
+        code.append(") {\n");
+
+        // Initialize fields in the constructor
+        for (String fieldName : fieldNames) {
+            code.append("        this.").append(fieldName).append("=").append(fieldName).append(";\n");
+        }
+        code.append("    }\n\n");
+
+        // Generate setter and getter methods
+        for (String fieldName : fieldNames) {
+            // Setter
+            code.append("    set").append(capitalize(fieldName)).append("(").append(fieldName).append(") {\n")
+                .append("        this.").append(fieldName).append("=").append(fieldName).append(";\n")
+                .append("    }\n\n");
+
+            // Getter
+            code.append("    get").append(capitalize(fieldName)).append("() {\n")
+                .append("        return this.").append(fieldName).append(";\n")
+                .append("    }\n\n");
+        }
+
+        // Close class
+        code.append("}\n");
+
+        return code.toString();
+    }
+
+    private static String capitalize(String str) {
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+private static void writeCodeToFile(String fileName, String code) {
+        try (RandomAccessFile randomAccessFile = new RandomAccessFile(fileName, "rw")) {
+            randomAccessFile.writeBytes(code);
+            System.out.println("JavaScript class generated and saved to " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void createJsFile(String fileName)
+    {
+
+	System.out.println(fileName);
+	try 
+	{
+	    String filePath = "C:\\tomcat9\\webapps\\TMWebRock\\WEB-INF\\js\\"+fileName;
+            File file=new File(filePath);
+	    file.getParentFile().mkdirs();
+            if(file.createNewFile())
+	    {
+                System.out.println("File created: " + file.getAbsolutePath());
+            }
+	    else 
+	    {
+                System.out.println("File already exists.");
+            }
+        }catch(IOException e)
+	{
+            System.err.println("Error creating file: " + e.getMessage());
+        }
+
+    }
+
 
   private void getListOfclasses(String path, String prefixName) {
     this.classesName = new LinkedList < String > ();
