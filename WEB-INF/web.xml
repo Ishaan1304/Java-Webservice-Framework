@@ -37,13 +37,19 @@
 <param-name>SERVICE_PACKAGE_PREFIX</param-name>
 <param-value>bobby</param-value>
 </init-param>
+<init-param>
+<param-name>jsFile</param-name>
+<param-value>abcd.js</param-value>
+</init-param>
+<init-param>
+<param-name>jsFileClass</param-name>
+<param-value>Student</param-value>
+</init-param>
+<init-param>
+<param-name>jsFileClassFields</param-name>
+<param-value>rollNumber,name,age</param-value>
+</init-param>
 </servlet>
-
-
-
-
-
-
 
 <servlet>
 <servlet-name>TMWebRock</servlet-name>
@@ -54,7 +60,14 @@
 <url-pattern>/schoolService/*</url-pattern>
 </servlet-mapping>
     
-
+<servlet>
+<servlet-name>TMJsFileServer</servlet-name>
+<servlet-class>com.thinking.machines.webrock.TMJsFileServer</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>TMJsFileServer</servlet-name>
+<url-pattern>/jsFile</url-pattern>
+</servlet-mapping>
 
       
 </web-app>
